@@ -14,7 +14,7 @@ Follow the guide on the official Visual Studio Code website (section Use the Win
 https://code.visualstudio.com/docs/setup/windows#_install-vs-code-on-windows
 
 ### Add Visual Studio Code to the PATH (optional)
-![Add vscode to path](image-12.png)
+![Add vscode to path](../assets/image-12.png)
 A useful utility that VS code provides us with is the ability to open it from the terminal/command line. To enable this feature, follow the instructions below.
 #### MacOs
 1. Open Visual Studio Code
@@ -62,18 +62,18 @@ If git is installed, you should see the version number of git.
 ### Windows
 1. Download the latest version of git from [here](https://git-scm.com/download/win)
 2. Run the installer
-   1. ![First step](image.png) - Keep the default install location.
-   2. ![Second step](image-1.png) - Keep the default components. Make sure that "Open Git Bash here" is selected.
-   3. ![Third step](image-2.png) - Keep the default start menu folder settings.
-   4. ![Fourth step](image-3.png) - Use Visual Studio Code as Git's default editor.
-   5. ![Fifth step](image-4.png) - Let Git decide the initial branch name.
-   6. ![Sixth step](image-5.png) - Git from the command line and also from 3rd-party software.
-   7. ![Seventh step](image-6.png) - Use the native Windows Secure Channel library.
-   8. ![Eigth step](image-7.png) - Keep the default settings for line endings - Checkout Windows-style, commit Unix-style line endings.
-   9. ![Ninth step](image-8.png) - Keep the default settings for terminal emulator - Use MinTTY.
-   10. ![Tenth step](image-9.png) - Keep the default behavior of git pull - Fast forward or merge.
-   11. ![Eleventh step](image-10.png) - Keep the default settings for credential helper - Use the Git Credential Manager.
-   12. ![Twelfth step](image-11.png) - Keep the default settings for extra options - checked file system caching unchecked symbolic links.
+   1. ![First step](../assets/image.png) - Keep the default install location.
+   2. ![Second step](../assets/image-1.png) - Keep the default components. Make sure that "Open Git Bash here" is selected.
+   3. ![Third step](../assets/image-2.png) - Keep the default start menu folder settings.
+   4. ![Fourth step](../assets/image-3.png) - Use Visual Studio Code as Git's default editor.
+   5. ![Fifth step](../assets/image-4.png) - Let Git decide the initial branch name.
+   6. ![Sixth step](../assets/image-5.png) - Git from the command line and also from 3rd-party software.
+   7. ![Seventh step](../assets/image-6.png) - Use the native Windows Secure Channel library.
+   8. ![Eigth step](../assets/image-7.png) - Keep the default settings for line endings - Checkout Windows-style, commit Unix-style line endings.
+   9. ![Ninth step](../assets/image-8.png) - Keep the default settings for terminal emulator - Use MinTTY.
+   10. ![Tenth step](../assets/image-9.png) - Keep the default behavior of git pull - Fast forward or merge.
+   11. ![Eleventh step](../assets/image-10.png) - Keep the default settings for credential helper - Use the Git Credential Manager.
+   12. ![Twelfth step](../assets/image-11.png) - Keep the default settings for extra options - checked file system caching unchecked symbolic links.
    13. Installation will start.
    14. Finish the installation.
 3. Open a command prompt and run the following command:
