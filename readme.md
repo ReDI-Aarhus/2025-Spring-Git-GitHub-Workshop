@@ -1,4 +1,4 @@
-# Git & GitHub Workshop (2-Day Edition)
+# Git & GitHub Workshop
 
 ![ReDI](assets/redi_banner.png)
 
