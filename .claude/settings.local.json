@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git rm exercise/instructions.md && git rm exercise/instructions.pdf)"
-    ]
-  }
-}
