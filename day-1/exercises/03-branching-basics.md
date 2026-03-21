@@ -1,136 +1,89 @@
-# Exercise 3: Parallel Universes
+# Exercise 3: Branching and Merging
 
-**Goal:** Learn to create branches, switch between them, and merge changes back together.
+**Goal:** Learn to create branches, work on them in isolation, and merge changes back together — all from VS Code.
 
 **Prerequisites:** Complete [Exercise 1](01-core-workflow.md) first.
 
 ---
 
-## Part A: Create and Switch Branches
+## Part A: Create a New Branch
 
-1. See what branch you are on:
-   ```bash
-   git branch
-   ```
-   You should see `* main` (or `* master`).
+The **current branch** is always shown in the **bottom-left corner** of the VS Code status bar (e.g., `main`).
 
-2. Create a new branch called `desserts`:
-   ```bash
-   git branch desserts
-   ```
+1. Click on the branch name in the status bar.
+   A picker appears at the top of the screen.
 
-3. Switch to the new branch:
-   ```bash
-   git switch desserts
-   ```
-   (Alternative: `git checkout desserts`)
+2. Select **"Create new branch..."** and type `desserts` as the branch name. Press Enter.
 
-4. Verify you are on the `desserts` branch:
-   ```bash
-   git branch
-   ```
+3. VS Code creates the branch and switches to it automatically.
+   Check the bottom-left — it now shows `desserts`.
+
+   > You are now working in isolation. Changes here don't affect `main`.
 
 ---
 
 ## Part B: Make Changes on the Branch
 
-1. Create a new recipe file:
-   ```bash
-   nano brownies.txt
-   ```
+1. In the **Explorer**, create a new file `brownies.txt` and add:
    ```
    Chocolate Brownies
    ===================
    Ingredients: chocolate, butter, sugar, eggs, flour
    Melt chocolate and butter, mix in sugar, eggs, flour.
-   Bake at 180C for 25 minutes.
+   Bake at 180°C for 25 minutes.
    ```
 
-2. Stage and commit:
-   ```bash
-   git add brownies.txt
-   git commit -m "Add brownies recipe"
-   ```
+2. In the **Source Control panel**, stage `brownies.txt` (`+` icon) and commit with the message `Add brownies recipe`.
 
 ---
 
-## Part C: Switch Back and Observe
+## Part C: Switch Branches and Observe
 
-1. Switch back to `main`:
-   ```bash
-   git switch main
-   ```
+1. Click the branch name in the status bar (`desserts`) and select `main` to switch back.
 
-2. List your files:
-   ```bash
-   ls
-   ```
-   Notice that `brownies.txt` is **gone** — it only exists on the `desserts` branch!
+2. Look at the **Explorer panel** — `brownies.txt` has **disappeared**.
+   It only exists on the `desserts` branch!
 
-3. Switch back to `desserts` and the file reappears:
-   ```bash
-   git switch desserts
-   ls
-   ```
+3. Switch back to `desserts` (click status bar → select `desserts`) — the file reappears.
+
+   > This is one of Git's superpowers: each branch has its own isolated snapshot.
 
 ---
 
 ## Part D: Visualize Your Branches
 
-1. View the branch graph:
-   ```bash
-   git log --oneline --graph --all
-   ```
-   You should see your branches diverging.
+1. Open the **Command Palette** (`Ctrl+Shift+P`) and search for **"Git: View History"**.
+
+2. In the history view, notice that `main` and `desserts` are at different points — they have **diverged**.
+
+   > This visual shows you exactly how your branches relate to each other.
 
 ---
 
-## Part E: Merge the Branch
+## Part E: Merge the Branch into Main
 
-1. Switch to the branch you want to merge **into** (usually `main`):
-   ```bash
-   git switch main
-   ```
+1. First, switch to `main` (click the status bar and select `main`).
 
-2. Merge the `desserts` branch:
-   ```bash
-   git merge desserts
-   ```
+2. Open the **Command Palette** (`Ctrl+Shift+P`) and search for **"Git: Merge Branch..."**.
 
-3. Verify the merge:
-   ```bash
-   ls
-   git log --oneline --graph --all
-   ```
-   `brownies.txt` should now be on `main` too.
+3. Select `desserts` from the list. VS Code merges it into `main`.
+
+4. Check the **Explorer** — `brownies.txt` is now on `main` too!
+
+5. Open the history view again to see that the branch has been merged.
 
 ---
 
 ## Part F: Clean Up
 
-1. Delete the merged branch (it's no longer needed):
-   ```bash
-   git branch -d desserts
-   ```
+1. To delete the merged branch, open the **Command Palette** and search for **"Git: Delete Branch..."**.
 
-2. Verify it's gone:
-   ```bash
-   git branch
-   ```
-
----
-
-## Bonus: Shortcut
-
-You can create **and** switch to a new branch in one command:
-```bash
-git switch -c new-branch-name
-```
+2. Select `desserts`. Since it's been merged, VS Code lets you delete it safely.
 
 ---
 
 ## Reflection Questions
 
 1. Why do files "disappear" when you switch branches?
-2. What does "fast-forward merge" mean? (Hint: check `git log --graph` after merging.)
-3. When might you want to keep a branch instead of deleting it?
+2. In what real-world situation would you use a branch? (Think: new feature, bug fix, experiment...)
+3. What is a "fast-forward merge" — and why does it happen?

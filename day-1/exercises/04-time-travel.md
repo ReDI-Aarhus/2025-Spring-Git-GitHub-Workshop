@@ -1,211 +1,137 @@
-# Exercise 4: Going Back in Time
+# Exercise 4: Revert and Reset
 
-**Goal:** Learn to revisit old commits, undo changes safely, and get a first look at merge conflicts.
+**Goal:** Learn how to undo mistakes in Git — safely and permanently — using VS Code.
 
 **Prerequisites:** Complete [Exercise 1](01-core-workflow.md) first.
 
 ---
 
-## Part A: Detached HEAD — Visiting the Past
+## Understanding the Two Undo Tools
 
-1. Find an older commit hash:
-   ```bash
-   git log --oneline
-   ```
-
-2. Check out that commit:
-   ```bash
-   git checkout <old-commit-hash>
-   ```
-   Git will warn you about a **"detached HEAD"** state. This means you are looking at an old snapshot but not on any branch.
-
-3. Look around — your files are exactly as they were at that point in time:
-   ```bash
-   ls
-   cat pancakes.txt
-   ```
-
-4. Go back to the present:
-   ```bash
-   git switch main
-   ```
-
-5. **Bonus:** Create a branch from an old commit:
-   ```bash
-   git checkout <old-commit-hash>
-   git switch -c old-experiment
-   ```
-   Now you can make changes based on that old state. Switch back to `main` when done:
-   ```bash
-   git switch main
-   ```
+| Tool | What it does | Safe to share? |
+|------|-------------|---------------|
+| **Revert** | Creates a new commit that undoes a previous one. History is kept. | ✅ Yes |
+| **Reset** | Moves the branch pointer backwards. History is rewritten. | ⚠️ Only for local commits |
 
 ---
 
-## Part B: git revert — Safe Undo
+## Part A: Discard Unsaved Changes
 
-`git revert` creates a **new** commit that undoes the changes from a previous commit. History is preserved.
+Before committing, you can throw away edits to a file with a single click.
 
-1. First, make a commit to revert. Edit `pancakes.txt` and add a bad line:
+1. Open `pancakes.txt` and add a bad line at the end:
+   ```
+   Add dishsoap for extra bubbles.
+   ```
+   Save the file.
+
+2. In the **Source Control panel**, the file appears under **Changes**.
+
+3. Hover over `pancakes.txt` and click the **↺ (Discard Changes)** icon.
+
+4. VS Code asks for confirmation. Click **Discard Changes**.
+   The file goes back to exactly how it was at the last commit.
+
+   > This is like `git checkout -- <file>`. Use it when you want to throw away edits you haven't committed yet.
+
+---
+
+## Part B: Revert a Commit (Safe Undo)
+
+`git revert` creates a **new commit** that cancels out a previous one. Your history is preserved and it's safe for shared work.
+
+1. Open `pancakes.txt` and add:
    ```
    Add pineapple for extra flavor.
    ```
-   ```bash
-   git add pancakes.txt
-   git commit -m "Add questionable ingredient"
-   ```
+   Save, stage, and commit with the message `Add questionable ingredient`.
 
-2. Now revert that commit:
-   ```bash
-   git revert HEAD
-   ```
-   Git opens your editor for the revert message — save and close it.
+2. Open the history view: **Command Palette** (`Ctrl+Shift+P`) → **"Git: View History"**.
 
-3. Check the log:
-   ```bash
-   git log --oneline
-   ```
-   You should see both the original commit and the revert commit.
+3. Find the commit `Add questionable ingredient`. Right-click on it and select **"Revert Commit..."** (or **"Undo Commit"** depending on VS Code version).
 
-4. Verify the file is back to normal:
-   ```bash
-   cat pancakes.txt
-   ```
+4. VS Code creates a new commit that undoes the change. Check the history — you'll see **both** the original and the revert commit.
+
+5. Open `pancakes.txt` to confirm the pineapple line is gone.
+
+   > Revert is always the safe choice when you've already shared your commits with others.
 
 ---
 
-## Part C: git reset — Rewriting History
+## Part C: Reset — Rewriting Local History
 
-> **Warning:** `git reset` rewrites history. Use it only on commits you haven't shared with others.
+> **Warning:** Only use reset on commits that you haven't pushed or shared with anyone.
 
-### Soft Reset (keeps changes staged)
+### Soft Reset — Undo the commit, keep changes staged
 
-1. Make a commit:
-   ```bash
-   echo "test content" > test.txt
-   git add test.txt
-   git commit -m "Add test file"
-   ```
+1. Add a temporary line to `pancakes.txt`, save, stage, and commit with the message `Add test content`.
 
-2. Undo the commit but keep the changes staged:
-   ```bash
-   git reset --soft HEAD~1
-   ```
+2. Open the **Command Palette** and search for **"Git: Undo Last Commit"**.
+   VS Code performs a **soft reset** — the commit disappears but your changes stay staged in the Source Control panel, ready to recommit.
 
-3. Check:
-   ```bash
-   git status
-   ```
-   `test.txt` is still staged, but the commit is gone.
+   > Use this when you committed too early and want to adjust the message or add more changes.
 
-### Mixed Reset (keeps changes unstaged) — the default
+### Mixed Reset — Undo the commit and unstage changes
 
-1. Commit again:
-   ```bash
-   git commit -m "Add test file again"
-   ```
+1. Commit the staged changes again (same content is still staged from the soft reset).
 
-2. Undo the commit and unstage:
+2. This time, in the terminal:
    ```bash
    git reset HEAD~1
    ```
+   The commit is gone and the file is now in **Changes** (unstaged). You can edit further before staging again.
 
-3. Check:
-   ```bash
-   git status
-   ```
-   `test.txt` is now an untracked/modified file.
+### Hard Reset — Discard the commit entirely
 
-### Hard Reset (discards everything)
+> **Danger:** This permanently deletes the commit and all its changes.
 
-> **Danger:** This permanently deletes uncommitted changes.
+1. Re-add the content and commit it one more time.
 
-1. Commit once more:
-   ```bash
-   git add test.txt
-   git commit -m "Add test file once more"
-   ```
-
-2. Completely discard the commit and all changes:
+2. In the terminal:
    ```bash
    git reset --hard HEAD~1
    ```
+   The commit and all changes are completely gone.
 
-3. Check:
-   ```bash
-   git status
-   ls
-   ```
-   `test.txt` is completely gone.
+3. In the **Source Control panel**, notice the file no longer appears under Changes.
 
 ---
 
-## Part D: Merge Conflict Preview
+## Part D: Preview — Merge Conflicts
 
 Tomorrow we'll resolve conflicts properly. For now, let's see what one looks like.
 
-1. Create two branches that edit the **same line** of the same file:
-   ```bash
-   git switch -c spicy-version
-   ```
+1. Create a branch called `spicy-version` from the status bar.
 
-2. Edit `pancakes.txt` — change the ingredients line to:
+2. Open `pancakes.txt` and change the ingredients line to:
    ```
    Ingredients: flour, eggs, milk, butter, chili flakes
    ```
-   ```bash
-   git add pancakes.txt
-   git commit -m "Add chili flakes to pancakes"
-   ```
+   Stage and commit with the message `Add chili flakes to pancakes`.
 
-3. Switch back to main and make a different edit to the **same line**:
-   ```bash
-   git switch main
-   ```
-   Edit `pancakes.txt` — change the ingredients line to:
+3. Switch back to `main` via the status bar.
+
+4. Edit the **same line** in `pancakes.txt`:
    ```
    Ingredients: flour, eggs, milk, butter, vanilla extract
    ```
-   ```bash
-   git add pancakes.txt
-   git commit -m "Add vanilla extract to pancakes"
-   ```
+   Stage and commit with the message `Add vanilla extract to pancakes`.
 
-4. Try to merge:
-   ```bash
-   git merge spicy-version
-   ```
-   Git will report a **merge conflict**.
+5. **Command Palette** → **"Git: Merge Branch..."** → select `spicy-version`.
 
-5. Open the file to see the conflict markers:
-   ```bash
-   cat pancakes.txt
-   ```
-   You'll see something like:
-   ```
-   <<<<<<< HEAD
-   Ingredients: flour, eggs, milk, butter, vanilla extract
-   =======
-   Ingredients: flour, eggs, milk, butter, chili flakes
-   >>>>>>> spicy-version
-   ```
+6. VS Code shows a **merge conflict warning** and marks the file with a `C` badge in the Source Control panel. Click the file to open the **Merge Editor**.
 
-6. For now, resolve it by choosing one version (or combining them). Edit the file to remove the markers, then:
-   ```bash
-   git add pancakes.txt
-   git commit -m "Resolve pancake ingredient conflict"
-   ```
+7. VS Code shows you both versions side by side. For now, just pick one version by clicking **"Accept Current Change"** or **"Accept Incoming Change"**.
 
-7. Clean up:
-   ```bash
-   git branch -d spicy-version
-   ```
+8. Stage the resolved file and commit with the message `Resolve pancake ingredient conflict`.
+
+9. Delete the `spicy-version` branch: **Command Palette** → **"Git: Delete Branch..."**.
 
 ---
 
 ## Reflection Questions
 
-1. What is the difference between `git revert` and `git reset`?
-2. When would you use `--soft` vs `--mixed` vs `--hard` reset?
-3. Why is `git revert` considered "safe" while `git reset --hard` is "dangerous"?
-4. What do the `<<<<<<<`, `=======`, and `>>>>>>>` markers mean in a conflict?
+1. What is the difference between **Discard Changes** (Part A) and **Revert Commit** (Part B)?
+2. When would you use **soft reset** vs **hard reset**?
+3. Why is `git revert` considered safe while `git reset --hard` is considered dangerous?
+4. What do you think causes a merge conflict — when does Git get confused?

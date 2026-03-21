@@ -1,88 +1,82 @@
-# Exercise 2: Reading the Story of Your Code
+# Exercise 2: Exploring History
 
-**Goal:** Learn to inspect the history of a Git repository — who changed what, when, and why.
+**Goal:** Learn to read the history of a repository — who changed what, when, and why — using VS Code's built-in tools.
 
 **Prerequisites:** Complete [Exercise 1](01-core-workflow.md) first (you need a repo with several commits).
 
 ---
 
-## Part A: Viewing the Log
+## Part A: The Timeline View
 
-1. See the full commit history:
-   ```bash
-   git log
-   ```
-   Each entry shows the **commit hash**, author, date, and message.
+VS Code has a built-in **Timeline** panel that shows the commit history for any file.
 
-2. Try a compact one-line view:
-   ```bash
-   git log --oneline
-   ```
+1. In the **Explorer panel**, click on `pancakes.txt` to open it.
 
-3. See a visual graph (useful once you have branches):
-   ```bash
-   git log --oneline --graph --all
-   ```
+2. At the bottom of the Explorer panel, find the **Timeline** section and expand it.
+   You'll see a list of commits that touched this file, with dates and messages.
 
-4. Limit the output to the last 2 commits:
-   ```bash
-   git log -2
-   ```
+3. Click on a commit entry to see what changed in that file at that point in time.
+   VS Code opens a diff view showing the exact lines added or removed.
+
+   > This replaces `git log` + `git show` for file-level history.
 
 ---
 
-## Part B: Inspecting a Single Commit
+## Part B: The Full Repository History
 
-1. Copy a commit hash from `git log --oneline` (e.g., `a1b2c3d`).
+To see commits across the **whole repository** (not just one file), use the **Source Control panel**.
 
-2. View the full details of that commit:
-   ```bash
-   git show <commit-hash>
-   ```
-   This shows the commit message **and** the exact changes (diff) introduced.
+1. Open the **Source Control panel** (`Ctrl+Shift+G`).
 
----
+2. Click the **`...` (Views and More Actions)** menu at the top of the panel.
 
-## Part C: Comparing Commits
+3. Select **"View History"** or look for the **Git History / Graph** option.
 
-1. Compare two commits to see what changed between them:
-   ```bash
-   git diff <older-hash>..<newer-hash>
-   ```
+   > If you don't see this, open the **Command Palette** (`Ctrl+Shift+P`) and search for **"Git: View History"**.
 
-2. Compare your current working directory against the last commit:
-   ```bash
-   git diff HEAD
-   ```
+4. A list of all commits appears. Each entry shows:
+   - The **commit message**
+   - The **author** and **date**
+   - A short **hash** (unique ID for that commit)
 
 ---
 
-## Part D: Finding Who Changed a Line
+## Part C: Inspecting a Commit
 
-1. Run `git blame` on one of your files:
-   ```bash
-   git blame pancakes.txt
-   ```
-   Each line shows the commit hash, author, and date of the last change to that line.
+1. In the history list, click on any commit to expand it.
+
+2. You'll see the list of files that were changed in that commit.
+
+3. Click on a file to open the **diff view** — what was added (green) and removed (red).
+
+   > This is the VS Code equivalent of `git show <commit-hash>`.
 
 ---
 
-## Part E: Searching the History
+## Part D: Comparing Two Versions
 
-1. Search commit messages for a keyword:
-   ```bash
-   git log --grep="pancakes"
-   ```
+1. In the **Timeline** panel (open a file in Explorer first), right-click on an older commit entry.
 
-2. Search for a string that was added or removed in the code:
-   ```bash
-   git log -S "maple syrup"
-   ```
+2. Select **"Compare with Current"** to see a diff between the selected snapshot and the current file.
+
+   > Useful for answering: "What exactly changed since last week?"
+
+---
+
+## Part E: Viewing Blame (Who Changed Each Line?)
+
+1. Open a file like `pancakes.txt` in the editor.
+
+2. Open the **Command Palette** (`Ctrl+Shift+P`) and search for **"Git: Toggle File Blame"** (you may need to type "blame").
+
+3. VS Code shows an annotation next to each line — the commit hash and message that last modified it.
+
+   > This is the VS Code equivalent of `git blame`. Very useful in team settings to understand *why* a line exists.
 
 ---
 
 ## Reflection Questions
 
-1. When would you use `git log --oneline` vs the full `git log`?
-2. How does `git blame` help in a team setting?
-3. What is the difference between `git diff` (no arguments) and `git diff HEAD`?
+1. What's the difference between the **Timeline** view (per file) and the **full repository history**?
+2. When would you use "Compare with Current" on an old commit?
+3. How does the **blame** view help you understand code written by a teammate?
